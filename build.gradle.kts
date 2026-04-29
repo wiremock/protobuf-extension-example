@@ -14,7 +14,7 @@ java {
 
 repositories {
     mavenCentral()
-    mavenLocal()
+//    mavenLocal()
 }
 
 val wiremockVersion = "4.0.0-beta.33"
