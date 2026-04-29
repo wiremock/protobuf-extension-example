@@ -10,6 +10,7 @@ import com.google.protobuf.DynamicMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ProtobufRecorderServeEventTransformer implements RecorderServeEventTransformer {
 
@@ -22,7 +23,7 @@ public class ProtobufRecorderServeEventTransformer implements RecorderServeEvent
   }
 
   @Override
-  public ServeEvent transform(ServeEvent serveEvent) {
+  public Optional<ServeEvent> transform(ServeEvent serveEvent) {
     ServeEvent result = serveEvent;
 
     if (isProtobufContentType(serveEvent.getRequest().contentTypeHeader())) {
@@ -61,7 +62,7 @@ public class ProtobufRecorderServeEventTransformer implements RecorderServeEvent
       }
     }
 
-    return result;
+    return Optional.of(result);
   }
 
   @Override
