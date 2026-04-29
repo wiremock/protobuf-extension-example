@@ -8,23 +8,30 @@ group = "org.wiremock"
 version = "0.1.0-SNAPSHOT"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
+val wiremockVersion = "4.0.0-beta.33"
+
 dependencies {
-    compileOnly("org.wiremock:wiremock:3.13.2")
+    compileOnly("org.wiremock:wiremock:$wiremockVersion")
+    compileOnly("org.wiremock:wiremock-httpclient-apache5:$wiremockVersion")
     implementation("com.google.protobuf:protobuf-java:3.25.8")
     implementation("com.google.protobuf:protobuf-java-util:3.25.8")
 
-    testImplementation("org.wiremock:wiremock:3.13.2")
+    testImplementation("org.wiremock:wiremock-jetty:$wiremockVersion")
+    testImplementation("org.wiremock:wiremock-httpclient-apache5:$wiremockVersion")
+    testImplementation("org.wiremock:wiremock-junit5:$wiremockVersion")
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.assertj:assertj-core:3.25.3")
+    testImplementation("net.javacrumbs.json-unit:json-unit-assertj:3.2.7")
 }
 
 protobuf {
