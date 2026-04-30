@@ -14,7 +14,7 @@ Requests with `Content-Type: application/x-protobuf` or `application/protobuf` a
 ## Prerequisites
 
 - Java 17+
-- WireMock 3.x
+- WireMock 4.x
 
 ## Building
 
