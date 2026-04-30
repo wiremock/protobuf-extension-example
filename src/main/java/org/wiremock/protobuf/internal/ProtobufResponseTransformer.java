@@ -27,6 +27,10 @@ public class ProtobufResponseTransformer implements ResponseTransformerV2 {
       return response;
     }
 
+    if (isProtobufResponse(response)) {
+      return addOriginalContentTypeHeader(response);
+    }
+
     String body = response.getBodyAsString();
     if (body == null || body.isEmpty()) {
       return response;
@@ -54,6 +58,30 @@ public class ProtobufResponseTransformer implements ResponseTransformerV2 {
     } catch (Exception e) {
       return response;
     }
+  }
+
+  private static boolean isProtobufResponse(Response response) {
+    if (response.getHeaders() == null) {
+      return false;
+    }
+    HttpHeader contentType = response.getHeaders().getHeader("Content-Type");
+    if (contentType == null || !contentType.isPresent()) {
+      return false;
+    }
+    String value = contentType.firstValue();
+    return value.contains("application/x-protobuf") || value.contains("application/protobuf");
+  }
+
+  private static Response addOriginalContentTypeHeader(Response response) {
+    String originalContentType = response.getHeaders().getHeader("Content-Type").firstValue();
+    List<HttpHeader> headers = new ArrayList<>(response.getHeaders().all());
+    headers.add(new HttpHeader("X-Original-Content-Type", originalContentType));
+
+    return Response.response()
+        .status(response.getStatus())
+        .headers(new HttpHeaders(headers))
+        .body(response.getBody())
+        .build();
   }
 
   @Override
